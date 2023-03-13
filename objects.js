@@ -34,7 +34,7 @@ const cat = {
   "date.of.adoption": "01/01/2023",
   location: { state: "Italy" } // referenza a un sotto oggetto anonimo, il valore salvato sarà l'indirizzo in memoria in cui trovarlo
 };
-
+// 1) DOT NOTATION - classica
 console.log(dog.breed);
 console.log(dog.age);
 
@@ -43,10 +43,13 @@ console.log(cat["date.of.adoption"]);
 
 const propertyName = "loca";
 
+// 2) SQUARE BRACKETS NOTATION - funziona molto bene per computazione di valori dinamici prima di tentare di accedere alla proprietà
 console.log(cat[propertyName + "tion"]);
 console.log(cat.propertyName); // in js leggere una proprietà inesistente non rompe l'esecuzione del codice, ci torna semplicemente undefined
 
 cat.name = "furball";
+// questa caratteristica di aggiungere nuove coppie chiave-valore agli oggetti
+// viene definita "CREAZIONE PER DEFINIZIONE"
 
 console.log(cat);
 
@@ -62,15 +65,20 @@ const rabbit = {
 
 console.log(rabbit);
 console.log(rabbit.area["location"].building);
-delete rabbit.color;
+delete rabbit.color; // <-- elimina una coppia chiave/valore tramite il nome
 console.log(rabbit);
+
+// quindi gli oggetti JS sono entità "dinamiche", possono evolversi/modificarsi nel
+// corso del tempo, durante l'esecuzione degli script.
+// possiamo dire che gli oggetti JS possono beneficiare di una DEFINIZIONE INCREMENTALE:
+// si parte da una definizione BASE, e la si può arricchire man mano.
 
 // CLONARE PRIMITIVE
 // clonando primitive in JS viene salvato il valore esatto, non stiamo salvando la referenza (o indirizzo di memoria in cui il dato esiste)
 let x = 10;
-let y = x;
+let y = x; // a y viene assegnato IL VALORE di x, che è 10
 
-x = x + 1;
+x = x + 1; // <-- x? x è 11 (era 10 inizialmente)
 
 console.log(y);
 console.log(x);
@@ -79,12 +87,18 @@ console.log(x);
 // clonando NON PRIMITIVE ci stiamo copiando la referenza di quell'entità (o link all'area di memoria)
 
 // const cat2 = cat; // PECCATO CAPITALE! DA NON FARE MAI!!!
+// cat2.name = "spitball";
+// modificando name dentro cat2 abbiamo modificato anche name dentro cat, perchè
+// sono solamente due riferimenti allo stesso oggetto
+
 // const newObj = {};
 // const cat2 = Object.assign(newObj, cat);
 
 const cat2 = Object.assign({}, cat); // Metodo 1 per SHALLOW COPY - richiede un target obj e una o più sources (fonti)
+// object assign richiede un target, di solito un oggetto vuoto, e una source, la sorgente
+// da cui andremo a trasportare le proprietà
 
-const cat3 = { ...cat, name: "speedy" }; // Metodo 2 per SHALLOW COPY - richiede un target obj e una o più sources (fonti)
+const cat3 = { ...cat, name: "speedy" }; // Metodo 2 per SHALLOW COPY - SPREAD OPERATOR - spalma le proprietà di uno o più oggetti in quello nuovo appena creato e le sovrascrive all'occorrenza
 console.log(cat);
 
 cat2.name = "spitball";
